@@ -22,26 +22,29 @@ if (DIFF_SIZE > MAX_DIFF_SIZE) {
 // 3. Warn when PR code has any debugging statements
 
 for (const file of MODIFIED_FILES) {
-  const fileContent = await danger.github.utils.fileContents(file);
-  if (fileContent.includes('console.log')) {
-    warn('Debugging statement found. Please remove console.log before merging.');
-  }
+  danger.github.utils.fileContents(file).then(fileContent => {
+    if (fileContent.includes('console.log')) {
+      warn('Debugging statement found. Please remove console.log before merging.');
+    }
+  });
 }
 
 // 4. Warn when PR code has any TODO comments
 
 for (const file of MODIFIED_FILES) {
-  const fileContent = await danger.github.utils.fileContents(file);
-  if (fileContent.includes('TODO')) {
-    warn('There are remaining TODO comments in the code. Please address them before merging.');
-  }
+  danger.github.utils.fileContents(file).then(fileContent => {
+    if (fileContent.includes('TODO')) {
+      warn('There are remaining TODO comments in the code. Please address them before merging.');
+    }
+  });
 }
 
 // 5. Warn when PR code has any commented-out code
 
 for (const file of MODIFIED_FILES) {
-  const fileContent = await danger.github.utils.fileContents(file);
-  if (fileContent.match(/\/\/.*\bFIXME\b/)) {
-    warn('Commented-out code found (FIXME). Please remove before merging.');
-  }
+  danger.github.utils.fileContents(file).then(fileContent => {
+    if (fileContent.match(/\/\/.*\bFIXME\b/)) {
+      warn('Commented-out code found (FIXME). Please remove before merging.');
+    }
+  });
 }
