@@ -23,4 +23,6 @@ jobs:
         run: npm install
 
       - name: Run Danger
+        env:
+          GITHUB_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
         run: npx danger ci
